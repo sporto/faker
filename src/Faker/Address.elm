@@ -1,37 +1,45 @@
 module Faker.Address where
 
-import Array
 import Random
-import Random.Array
-import Random.Extra
-import Random.Maybe
 
 {-| Generate a random city name
 
   city seed == "Westside"
 
 -}
-city : Random.Seed -> String
+--city : Random.Seed -> String
 city seed =
   let
     prefix =
-      Random.Extra.generateN  1 cityPrefixGen seed
-        |> List.head
-        |> Maybe.withDefault ""
+      takeFrom seed cityPrefix
     suffix =
-      Random.Extra.generateN  1 citySuffixGen seed
-        |> List.head
-        |> Maybe.withDefault ""
+      takeFrom seed citySuffix
   in
     prefix ++ suffix
 
-cityPrefixGen : Random.Generator String
-cityPrefixGen =
-  Random.Extra.selectWithDefault "" cityPrefix
+takeFrom seed list =
+  let
+    total =
+      List.length list
+    generator =
+      Random.int 0 (total - 1)
+    index =
+        Random.generate generator seed
+        |> fst
+  in
+    list 
+      |> List.drop (index - 1)
+      |> List.head
+      |> Maybe.withDefault ""
 
-citySuffixGen : Random.Generator String
-citySuffixGen =
-  Random.Extra.selectWithDefault "" citySuffix
+
+--cityPrefixGen : Random.Generator String
+--cityPrefixGen =
+--  Random.Extra.selectWithDefault "" cityPrefix
+
+--citySuffixGen : Random.Generator String
+--citySuffixGen =
+--  Random.Extra.selectWithDefault "" citySuffix
 
 cityPrefix : List String
 cityPrefix =

@@ -11,7 +11,7 @@ seed =
 testCity: Test
 testCity =
   test "Address"
-    (assertEqual "Newside" (Address.city seed))
+    (assertEqual "Southhaven" (Address.city seed))
     --(assert (Regex.contains (Regex.regex "\\D+") Address.city))
 
 -- suite : String -> List Test -> Test
